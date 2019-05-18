@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR lpCmdLine,
 
     if (std::filesystem::exists(ElectronExe))
     {
-        if (!launch(ElectronExe, L"--high-dpi-support=1 --force-device-scale-factor=1 --js-flags=\"--use - strict\" ./bin/index-gui.js"))
+        if (!launch(ElectronExe, L"--high-dpi-support=1 --force-device-scale-factor=1 --js-flags=\"--use-strict\" ./bin/index-gui.js"))
         {
             MessageBoxW(NULL, L"Unable to launch TERA Toolbox!\nPlease go to https://discord.gg/dUNDDtw and ask for help.", L"Error", 0);
             return 1;
