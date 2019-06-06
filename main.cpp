@@ -1,17 +1,16 @@
-//#define LAUNCH_CLI
-
 #define _CRT_SECURE_NO_WARNINGS
 #define NOMINMAX
 #include <Windows.h>
 #include <Shlwapi.h>
 #include <string>
+#include <array>
 #include <filesystem>
 
 std::filesystem::path getRootFolder()
 {
-    std::vector<WCHAR> res(MAX_PATH);
+    std::array<WCHAR, MAX_PATH> res;
 
-    DWORD length = GetModuleFileNameW(NULL, res.data(), res.size());
+    GetModuleFileNameW(NULL, res.data(), res.size());
     PathRemoveFileSpecW(res.data());
     return res.data();
 }
@@ -19,9 +18,9 @@ std::filesystem::path getRootFolder()
 bool findNode(std::filesystem::path& NodePath)
 {
     const std::wstring NodeName = L"node.exe";
-    std::vector<WCHAR> res(MAX_PATH);
+    std::array<WCHAR, MAX_PATH> res;
+    res.fill(0);
     std::copy(NodeName.begin(), NodeName.end(), res.begin());
-    res[NodeName.size()] = 0;
 
     if (!PathFindOnPathW(res.data(), NULL))
         return false;
@@ -50,6 +49,7 @@ bool launch(const std::filesystem::path& ExecutableName, const std::wstring& Com
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     const auto RootFolder = getRootFolder();
+    std::filesystem::current_path(RootFolder);
 
 #ifdef LAUNCH_CLI
     std::filesystem::path NodeExe;
